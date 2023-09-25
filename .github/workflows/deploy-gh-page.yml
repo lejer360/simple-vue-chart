@@ -18,7 +18,8 @@ jobs:
           node-version-file: ".nvmrc"
 
       - run: npm ci
-      - run: npm test:unit
+      - run: "npm run test:unit #"
+      - run: npm run test:e2e
 
       - name: Custom script
         uses: actions/github-script@v6
