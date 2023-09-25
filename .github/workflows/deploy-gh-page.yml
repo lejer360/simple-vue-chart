@@ -1,0 +1,27 @@
+name: Deploy Github Pages
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+
+      - run: npm ci
+      - run: npm test:unit
+
+      - name: Custom script
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log({ context });
