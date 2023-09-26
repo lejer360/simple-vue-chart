@@ -17,9 +17,17 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - run: npm ci
-      - run: "npm run test:unit #"
-      - run: npm run test:e2e
+      - name: Clean install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        if: ${{github.ref_name }} != "refs/heads/main"
+        run: "npm run test:unit #"
+
+      - name: Install xfvb
+        run: sudo apt-get install xvfb
+      - name: Run E2E tests
+        run: xvfb-run --auto-servernum npm run test:e2e -- --env chrome
 
       - name: Custom script
         uses: actions/github-script@v6
