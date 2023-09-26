@@ -24,10 +24,13 @@ jobs:
         if: ${{github.ref_name }} != "refs/heads/main"
         run: "npm run test:unit #"
 
-      - name: Install xfvb
-        run: sudo apt-get install xvfb
-      - name: Run E2E tests
-        run: xvfb-run --auto-servernum npm run test:e2e -- --env chrome
+      - name: Run e2e tests
+
+        uses: browser-actions/setup-chrome@v1
+      - run: chrome --version # check chrome version
+
+      - run: sudo apt-get install xvfb # install xfvb
+      - run: xvfb-run --auto-servernum npm run test:e2e --headless # run test:e2e through xvfb
 
       - name: Custom script
         uses: actions/github-script@v6
